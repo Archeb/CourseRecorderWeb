@@ -1,0 +1,6 @@
+.body {
+	margin: 0;
+	background: url(../img/bgrepeat.png);
+	background-repeat: repeat;
+	background-position: center;
+}
