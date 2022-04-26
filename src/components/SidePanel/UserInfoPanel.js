@@ -1,8 +1,12 @@
 import React from "react";
-import { User, ButtonGroup, Button } from "@geist-ui/core";
-import { Settings, LogOut } from "@geist-ui/icons";
+import { User, ButtonGroup, Button, Drawer, Input } from "@geist-ui/core";
+import { Settings, LogOut, User as UserIcon } from "@geist-ui/icons";
 
 class UserInfoPanel extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { settingsVisible: false };
+	}
 	render() {
 		return (
 			<div className="userInfoPanel">
@@ -11,7 +15,12 @@ class UserInfoPanel extends React.Component {
 				</User>
 				<div className="userInfoPanelActions">
 					<ButtonGroup type="abort" scale={0.5}>
-						<Button scale={0.5}>
+						<Button
+							scale={0.5}
+							onClick={() => {
+								this.setState({ settingsVisible: true });
+							}}
+						>
 							<Settings size={16} />
 							&nbsp;设置
 						</Button>
@@ -21,6 +30,19 @@ class UserInfoPanel extends React.Component {
 						</Button>
 					</ButtonGroup>
 				</div>
+				<Drawer
+					visible={this.state.settingsVisible}
+					onClose={() => {
+						this.setState({ settingsVisible: false });
+					}}
+					placement="right"
+				>
+					<Drawer.Title>设置</Drawer.Title>
+					<Drawer.Subtitle>Settings</Drawer.Subtitle>
+					<Drawer.Content>
+						<Input icon={<UserIcon />} placeholder="用户名"></Input>
+					</Drawer.Content>
+				</Drawer>
 			</div>
 		);
 	}

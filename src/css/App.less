@@ -10,19 +10,21 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-#root {
+body {
 	margin: 0;
+	top: 0;
+	left: 0;
 	background: url(../img/bgrepeat.png);
 	background-repeat: repeat;
-	min-height: 100vh !important;
 	background-position: center;
+	background-attachment: fixed;
 }
 .mainContainer {
+	margin: auto !important;
+	width: auto !important;
 	padding: 20px 20px;
-	margin: 0 auto;
 	height: 100vh !important;
 	.sidePanel {
-		height: 80vh !important;
 		& > .content {
 			height: 100% !important;
 			display: flex;
@@ -40,6 +42,7 @@ code {
 				display: flex;
 				flex-direction: column;
 				overflow: hidden;
+				height: 100%;
 			}
 			.activityList {
 				overflow-y: scroll;
@@ -57,6 +60,24 @@ code {
 					}
 				}
 			}
+			.courseChat {
+				display: flex;
+				flex-direction: column;
+				flex-grow: 1;
+				height: 100%;
+				.chatMessageList {
+					height: 100%;
+					overflow-y: scroll;
+					flex-grow: 1;
+					.note {
+						margin-bottom: 10px;
+						margin-right: 4px;
+					}
+				}
+				.chatInput {
+					height: 50px;
+				}
+			}
 		}
 		.userInfoPanel {
 			border-top: 1px solid #eaeaea;
@@ -67,14 +88,34 @@ code {
 		}
 	}
 	.mainPanel {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		width: 100% !important;
-		height: 80vh !important;
 	}
 }
 
 @media screen and (min-width: 1280px) {
 	.mainContainer {
 		padding: 20px 3%;
+	}
+	.mainPanel {
+		height: 80vh !important;
+	}
+	.sidePanel {
+		height: 80vh !important;
+	}
+}
+
+@media screen and (max-width: 1279px) {
+	.mainContainer {
+		padding: 10px;
+	}
+	.mainPanel {
+		height: 30vh !important;
+	}
+	.sidePanel {
+		height: calc(70vh - 35px) !important;
 	}
 }
 

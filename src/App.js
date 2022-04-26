@@ -1,3 +1,4 @@
+import React from "react";
 import "./css/App.less";
 import MainPanel from "./components/MainPanel";
 import SidePanel from "./components/SidePanel";

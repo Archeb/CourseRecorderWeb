@@ -3,6 +3,7 @@ import { Card, Tabs } from "@geist-ui/core";
 import { Activity, Twitch } from "@geist-ui/icons";
 import ActivityList from "./ActivityList";
 import UserInfoPanel from "./UserInfoPanel";
+import CourseChat from "./CourseChat";
 
 class SidePanel extends React.Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ class SidePanel extends React.Component {
 				{ eventId: "1619fa", action: "documentPageChange", content: "PPT 切换到第六页，点击回顾" },
 				{ eventId: "1615", action: "userEnter", content: "学生 四二二 已进入课堂" },
 				{ eventId: "1620", action: "webBrowse", content: "老师打开了网页 https://www.bnu.edu.cn" },
-				{ eventId: "1620", action: "webBrowse", content: "老师打开了网页 https://www.exhentai.org" },
+				{ eventId: "1620s", action: "webBrowse", content: "老师打开了网页 https://www.exhentai.org" },
 				{ eventId: "1621", action: "endCourse", content: "下课啦！" },
 			],
 		};
@@ -49,7 +50,7 @@ class SidePanel extends React.Component {
 						}
 						value="2"
 					>
-						这个组件看起来还不错。
+						<CourseChat />
 					</Tabs.Item>
 				</Tabs>
 				<UserInfoPanel></UserInfoPanel>
