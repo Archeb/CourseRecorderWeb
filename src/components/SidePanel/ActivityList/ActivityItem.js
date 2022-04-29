@@ -1,12 +1,12 @@
 import React from "react";
 import { Note } from "@geist-ui/core";
-import { Play, LogIn, Bookmark, AlertCircle, Coffee, Compass } from "@geist-ui/icons";
+import { Play, LogIn, Bookmark, AlertCircle, Coffee, Compass, FileText, FileMinus } from "@geist-ui/icons";
 
 class ActivityItem extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-		switch (props.event.action) {
+		switch (props.activity.action) {
 			case "courseBegin":
 				this.state.friendlyIcon = <Play />;
 				this.state.noteType = "success";
@@ -27,6 +27,16 @@ class ActivityItem extends React.Component {
 				this.state.noteType = "warning";
 				this.state.filled = true;
 				break;
+			case "documentOpen":
+				this.state.friendlyIcon = <FileText />;
+				this.state.noteType = "success";
+				this.state.filled = true;
+				break;
+			case "documentClose":
+				this.state.friendlyIcon = <FileMinus />;
+				this.state.noteType = "error";
+				this.state.filled = true;
+				break;
 			case "webBrowse":
 				this.state.friendlyIcon = <Compass />;
 				this.state.noteType = "success";
@@ -40,7 +50,7 @@ class ActivityItem extends React.Component {
 		return (
 			<Note label={false} type={this.state.noteType} filled={this.state.filled} className="activityItem">
 				{this.state.friendlyIcon}
-				{this.props.event.content}
+				{this.props.activity.content}
 			</Note>
 		);
 	}

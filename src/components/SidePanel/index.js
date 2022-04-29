@@ -2,9 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { Card, Tabs } from "@geist-ui/core";
 import { Activity, Twitch } from "@geist-ui/icons";
+import { sendMessage } from "../../store/slices/interactionSlice";
 import ActivityList from "./ActivityList";
 import UserInfoPanel from "./UserInfoPanel";
-import CourseChat from "./CourseChat";
+import InterativeMessage from "./InterativeMessage";
 
 class SidePanel extends React.Component {
 	// eslint-disable-next-line
@@ -35,7 +36,7 @@ class SidePanel extends React.Component {
 						}
 						value="2"
 					>
-						<CourseChat />
+						<InterativeMessage interaction={this.props.interaction} sendMessage={this.props.sendMessage} />
 					</Tabs.Item>
 				</Tabs>
 				<UserInfoPanel></UserInfoPanel>
@@ -44,10 +45,13 @@ class SidePanel extends React.Component {
 	}
 }
 
+const mapDispatchToProps = { sendMessage };
+
 const mapStateToProps = (state) => {
 	return {
 		activities: state.course.activities,
+		interaction: state.interaction,
 	};
 };
 
-export default connect(mapStateToProps)(SidePanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SidePanel);

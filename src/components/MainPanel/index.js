@@ -1,8 +1,11 @@
 import React from "react";
+import screenfull from "screenfull";
 import { useSelector } from "react-redux";
 import { GeistProvider, Card, Loading } from "@geist-ui/core";
+import { FullScreen, Pause } from "@geist-ui/icons";
 
 const MainPanel = () => {
+	const coursePlayer = React.createRef();
 	const course = useSelector((state) => state.course);
 
 	let content;
@@ -18,7 +21,28 @@ const MainPanel = () => {
 
 	return (
 		<Card shadow className="mainPanel">
-			<div className="coursePlayer">{content}</div>
+			<div className="coursePlayer" ref={coursePlayer}>
+				{content}
+				<div className="playerControlBar">
+					<div className="controlBarLeft">
+						<div className="controlButton">
+							<Pause />
+						</div>
+					</div>
+					<div className="controlBarRight">
+						<div
+							className="controlButton"
+							onClick={() => {
+								if (screenfull.isEnabled) {
+									screenfull.toggle(coursePlayer.current, { navigationUI: "hide" });
+								}
+							}}
+						>
+							<FullScreen />
+						</div>
+					</div>
+				</div>
+			</div>
 		</Card>
 	);
 };

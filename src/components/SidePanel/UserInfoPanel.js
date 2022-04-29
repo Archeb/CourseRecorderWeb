@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { User, ButtonGroup, Button, Drawer, Input } from "@geist-ui/core";
 import { Settings, LogOut, User as UserIcon } from "@geist-ui/icons";
-import { setNickname } from "../../CourseManager/slices/userSlice";
+import { setNickname } from "../../store/slices/userSlice";
 
 const UserInfoPanel = () => {
 	const dispatch = useDispatch();

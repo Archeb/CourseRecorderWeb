@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	status: "disconnected",
-	serverAddress: "localtest.qwq.moe:3300",
+	serverAddress: "wss://schooltest.qwq.moe:3300/ws",
 	courseId: "11111111-2222-3333-4444-555555555555",
 	activities: [
 		/*

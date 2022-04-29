@@ -17,10 +17,10 @@ class App extends React.Component {
 				<CssBaseline />
 				<CourseConnection />
 				<Grid.Container className="mainContainer" gap={2} alignItems="center">
-					<Grid xs={24} lg={17} xl={19}>
+					<Grid xs={24} md={17} lg={17} xl={19}>
 						<MainPanel />
 					</Grid>
-					<Grid xs={24} lg={7} xl={5}>
+					<Grid xs={24} md={7} lg={7} xl={5}>
 						<SidePanel />
 					</Grid>
 				</Grid.Container>
