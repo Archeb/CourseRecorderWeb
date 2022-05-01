@@ -1,8 +1,15 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
 import { connect } from "react-redux";
+import { Link, useToasts } from "@geist-ui/core";
 import { setCourseStatus, setCourseId, pushActivity, setCurrentScreenshot } from "../store/slices/courseSlice";
 import { pushMessage } from "../store/slices/interactionSlice";
+
+function withToast(Component) {
+	return function WrappedComponent(props) {
+		return <Component {...props} toastFuncs={useToasts()} />;
+	};
+}
 
 class CourseConnection extends React.Component {
 	Promises = {};
@@ -15,6 +22,16 @@ class CourseConnection extends React.Component {
 		if (!window.CourseConnection) {
 			// prevent multiple instances
 			window.CourseConnection = this;
+			this.props.setCourseId(this.props.courseIdToJoin);
+		}
+	}
+	componentDidUpdate(prevProps) {
+		if (this.props.courseIdToJoin !== prevProps.courseIdToJoin) {
+			this.props.setCourseId(this.props.courseIdToJoin);
+		}
+	}
+	connect() {
+		if (this.props.status === "disconnected") {
 			this.props.setCourseStatus("connecting");
 			this.ws = new WebSocket(this.props.serverAddress);
 			this.ws.onopen = this.onOpen.bind(this);
@@ -35,6 +52,10 @@ class CourseConnection extends React.Component {
 			switch (msg.action) {
 				case "registered":
 					console.log("registered!");
+					if (msg.realCourseId) {
+						console.log("Short code was used to join the course");
+						this.props.setCourseId(msg.realCourseId);
+					}
 					this.props.pushActivity({
 						activityId: "courseBegin",
 						action: "courseBegin",
@@ -93,7 +114,10 @@ class CourseConnection extends React.Component {
 										action: "documentOpen",
 										content: (
 											<span>
-												老师打开了文件 <a href={msg.attachment.fileName}>{msg.event.Name}</a>
+												老师打开了文件
+												<Link icon href={msg.attachment.fileName}>
+													{msg.event.Name}
+												</Link>
 											</span>
 										),
 									});
@@ -113,6 +137,9 @@ class CourseConnection extends React.Component {
 						default:
 							console.log("not implemented event type: " + msg.event.EventType);
 					}
+					break;
+				case "error":
+					this.props.toastFuncs.setToast({ text: msg.error });
 					break;
 				default:
 					console.log("unknown action", message.data);
@@ -172,4 +199,4 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CourseConnection);
+export default withToast(connect(mapStateToProps, mapDispatchToProps)(CourseConnection));

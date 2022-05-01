@@ -1,32 +1,45 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import "./css/App.less";
 import MainPanel from "./components/MainPanel";
 import SidePanel from "./components/SidePanel";
 import CourseConnection from "./components/connection";
-import { Grid, GeistProvider, CssBaseline } from "@geist-ui/core";
+import { Grid, GeistProvider, CssBaseline, Modal, Input } from "@geist-ui/core";
 
-class App extends React.Component {
-	componentDidMount() {
-		if (window.CourseConnection.status === "disconnected") {
-			window.CourseConnection.connect("localtest.qwq.moe:3300");
-		}
-	}
-	render() {
-		return (
-			<GeistProvider>
-				<CssBaseline />
-				<CourseConnection />
-				<Grid.Container className="mainContainer" gap={2} alignItems="center">
-					<Grid xs={24} md={17} lg={17} xl={19}>
-						<MainPanel />
-					</Grid>
-					<Grid xs={24} md={7} lg={7} xl={5}>
-						<SidePanel />
-					</Grid>
-				</Grid.Container>
-			</GeistProvider>
-		);
-	}
-}
+const App = () => {
+	const course = useSelector((state) => state.course);
+	const [courseIdToJoin, setCourseIdToJoin] = React.useState("");
+
+	return (
+		<GeistProvider>
+			<CssBaseline />
+			<Modal visible={!(course.status === "registered")}>
+				<Modal.Title>加入课堂</Modal.Title>
+				<Modal.Subtitle>请用手机自带相机扫码加入课堂，或者输入加课码</Modal.Subtitle>
+				<Modal.Content>
+					<Input
+						value={courseIdToJoin}
+						onChange={(e) => {
+							setCourseIdToJoin(e.target.value);
+						}}
+						width="100%"
+						placeholder="请输入加课码"
+					></Input>
+				</Modal.Content>
+				<Modal.Action passive>使用帮助</Modal.Action>
+				<Modal.Action onClick={() => window.CourseConnection.connect()}>加入</Modal.Action>
+			</Modal>
+			<CourseConnection courseIdToJoin={courseIdToJoin} />
+			<Grid.Container className="mainContainer" gap={2} alignItems="center">
+				<Grid xs={24} md={17} lg={17} xl={19}>
+					<MainPanel />
+				</Grid>
+				<Grid xs={24} md={7} lg={7} xl={5}>
+					<SidePanel />
+				</Grid>
+			</Grid.Container>
+		</GeistProvider>
+	);
+};
 
 export default App;
