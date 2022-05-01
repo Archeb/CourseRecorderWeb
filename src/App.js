@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import "./css/App.less";
 import MainPanel from "./components/MainPanel";
 import SidePanel from "./components/SidePanel";
 import CourseConnection from "./components/connection";
 import { Grid, GeistProvider, CssBaseline, Modal, Input } from "@geist-ui/core";
+import { validate } from "uuid";
 
 const App = () => {
 	const course = useSelector((state) => state.course);
 	const [courseIdToJoin, setCourseIdToJoin] = React.useState("");
+
+	useEffect(() => {
+		let courseIdFromParam;
+		if ((courseIdFromParam = new URLSearchParams(window.location.search).get("courseId"))) {
+			setCourseIdToJoin(courseIdFromParam);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (validate(courseIdToJoin)) {
+			window.CourseConnection.connect();
+		}
+	}, [courseIdToJoin]);
 
 	return (
 		<GeistProvider>

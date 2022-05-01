@@ -143,9 +143,20 @@ body {
 .mainContainer .sidePanel .userInfoPanel .user .name {
   text-transform: none;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .mainContainer {
     padding: 20px 3%;
+  }
+  .mainPanel {
+    height: 80vh !important;
+  }
+  .sidePanel {
+    height: 80vh !important;
+  }
+}
+@media screen and (min-width: 900px) {
+  .mainContainer {
+    padding: 20px 1%;
   }
   .mainPanel {
     height: 80vh !important;
