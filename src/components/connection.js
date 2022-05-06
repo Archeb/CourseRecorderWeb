@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Link, useToasts } from "@geist-ui/core";
 import { setCourseStatus, setCourseId, pushActivity, setCurrentScreenshot } from "../store/slices/courseSlice";
 import { pushMessage } from "../store/slices/interactionSlice";
+import { SrsRtcPlayerAsync } from "../3rdparty/srs.sdk";
 
 function withToast(Component) {
 	return function WrappedComponent(props) {
@@ -13,6 +14,8 @@ function withToast(Component) {
 
 class CourseConnection extends React.Component {
 	Promises = {};
+	srsSdk = null;
+	streamAudioPlayer = null;
 
 	constructor(props) {
 		super();
@@ -82,6 +85,29 @@ class CourseConnection extends React.Component {
 					break;
 				case "interactiveMessage":
 					this.props.pushMessage(msg.message);
+					break;
+				case "streamUpdate":
+					// create a video element
+					if (!this.streamAudioPlayer) {
+						this.streamAudioPlayer = document.createElement("video");
+						this.streamAudioPlayer.setAttribute("id", "streamAudioPlayer");
+						this.streamAudioPlayer.setAttribute("autoplay", "autoplay");
+						document.querySelector(".coursePlayer").appendChild(this.streamAudioPlayer);
+					}
+					if (this.srsSdk) {
+						this.srsSdk.close();
+					}
+					this.srsSdk = new SrsRtcPlayerAsync();
+					this.streamAudioPlayer.srcObject = this.srsSdk.stream;
+					this.srsSdk
+						.play("webrtc://" + msg.stream.server + "/live/" + msg.stream.id)
+						.then((session) => {
+							console.log("srs session: ", session);
+						})
+						.catch((reason) => {
+							this.srsSdk.close();
+							console.error(reason);
+						});
 					break;
 				case "eventUpdate":
 					console.log("eventUpdate!");
